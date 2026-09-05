@@ -492,6 +492,417 @@ function AuthPanel({ onLogin }) {
 }
 
 /* -------------------------------------------------------
+   BEFORE / AFTER
+------------------------------------------------------- */
+
+const beforeAfterItems = [
+  {
+    id: 1,
+    title: "Deep Cleaning",
+    description: "Kitchen cleaning and restoration.",
+    before: "/assets/before-kitchen.jpg",
+    after: "/assets/after-kitchen.jpg",
+  },
+  {
+    id: 2,
+    title: "Office Cleaning",
+    description: "Professional workspace cleaning.",
+    before: "/assets/before-office.jpg",
+    after: "/assets/after-office.jpg",
+  },
+  {
+    id: 3,
+    title: "Residential Cleaning",
+    description: "Fresh, clean results for your home.",
+    before: "/assets/before-home.jpg",
+    after: "/assets/after-home.jpg",
+  },
+
+  {
+    id: 4,
+    title: "Post-Construction Cleaning",
+    description: "From construction dust to a clean finished space.",
+    before: "/assets/before-construction.jpg",
+    after: "/assets/after-construction.jpg",
+  },
+];
+
+function BeforeAfter() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [position, setPosition] = useState(50);
+
+  const item = beforeAfterItems[activeIndex];
+
+  function handlePosition(e) {
+    setPosition(Number(e.target.value));
+  }
+
+  return (
+    <section id="before-after" className="before-after section">
+      <Reveal className="section-heading">
+        <p className="eyebrow">OUR RESULTS</p>
+
+        <h2>See the difference we make.</h2>
+
+        <p>
+          Compare the space before and after our professional cleaning service.
+        </p>
+      </Reveal>
+
+      <Reveal delay={0.15}>
+        <div className="before-after-wrapper">
+          <div className="before-after-card">
+            <div className="before-after-image">
+              {/* AFTER IMAGE */}
+              <img
+                src={item.after}
+                alt={`${item.title} after cleaning`}
+                className="after-image"
+              />
+
+              {/* BEFORE IMAGE */}
+              <div
+                className="before-image-container"
+                style={{
+                  width: `${position}%`,
+                }}
+              >
+                <img
+                  src={item.before}
+                  alt={`${item.title} before cleaning`}
+                  className="before-image"
+                />
+              </div>
+
+              {/* LABELS */}
+              <span className="before-label">BEFORE</span>
+              <span className="after-label">AFTER</span>
+
+              {/* SLIDER LINE */}
+              <div
+                className="slider-line"
+                style={{
+                  left: `${position}%`,
+                }}
+              >
+                <div className="slider-handle">↔</div>
+              </div>
+
+              {/* RANGE CONTROL */}
+              <input
+                className="before-after-range"
+                type="range"
+                min="0"
+                max="100"
+                value={position}
+                onChange={handlePosition}
+                aria-label="Compare before and after"
+              />
+            </div>
+
+            <div className="before-after-info">
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
+
+              <div className="before-after-counter">
+                {activeIndex + 1} / {beforeAfterItems.length}
+              </div>
+            </div>
+          </div>
+
+          {/* PROJECT SELECTOR */}
+          <div className="before-after-projects">
+            {beforeAfterItems.map((project, index) => (
+              <button
+                key={project.id}
+                type="button"
+                className={`before-after-project ${
+                  activeIndex === index ? "active" : ""
+                }`}
+                onClick={() => {
+                  setActiveIndex(index);
+                  setPosition(50);
+                }}
+              >
+                <span>{project.title}</span>
+                <small>{project.description}</small>
+              </button>
+            ))}
+          </div>
+        </div>
+      </Reveal>
+    </section>
+  );
+}
+/* -------------------------------------------------------
+   REVIEWS
+------------------------------------------------------- */
+
+const defaultReviews = [
+  {
+    id: 1,
+    name: "Hilux Hotel and Apartment Service",
+    rating: 5,
+    review:
+      "The team did an excellent job. Everything was properly cleaned and the service was professional from start to finish.",
+  },
+  {
+    id: 2,
+    name: "Godwin Luis ",
+    rating: 5,
+    review:
+      "Very reliable and punctual. The quality of the cleaning was excellent and the team was easy to work with.",
+  },
+  {
+    id: 3,
+    name: "Delcelsi Nursery and School",
+    rating: 5,
+    review:
+      "I was impressed with the results. My School environment looked fresh, clean and completely different after the service.",
+  },
+];
+
+function Reviews() {
+  const [reviews, setReviews] = useState(() => {
+    try {
+      const savedReviews = localStorage.getItem("acs_reviews");
+
+      return savedReviews ? JSON.parse(savedReviews) : defaultReviews;
+    } catch {
+      return defaultReviews;
+    }
+  });
+
+  const [form, setForm] = useState({
+    name: "",
+    rating: 5,
+    review: "",
+  });
+
+  const [message, setMessage] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const name = form.name.trim();
+    const reviewText = form.review.trim();
+
+    if (!name || !reviewText) {
+      setMessage("Please enter your name and review.");
+      return;
+    }
+
+    if (reviewText.length < 10) {
+      setMessage("Please write a little more about your experience.");
+      return;
+    }
+
+    const newReview = {
+      id: Date.now(),
+      name,
+      rating: Number(form.rating),
+      review: reviewText,
+    };
+
+    const updatedReviews = [newReview, ...reviews];
+
+    setReviews(updatedReviews);
+
+    try {
+      localStorage.setItem("acs_reviews", JSON.stringify(updatedReviews));
+    } catch {
+      // Continue even if localStorage is unavailable.
+    }
+
+    setForm({
+      name: "",
+      rating: 5,
+      review: "",
+    });
+
+    setMessage("Thank you for sharing your review!");
+  }
+
+  return (
+    <section id="reviews" className="reviews section">
+      <Reveal className="section-heading">
+        <p className="eyebrow">CUSTOMER REVIEWS</p>
+
+        <h2>What our customers say.</h2>
+
+        <p>
+          We are committed to providing reliable service and quality cleaning
+          results for every customer.
+        </p>
+      </Reveal>
+
+      {/* REVIEW CARDS */}
+      <div className="reviews-grid">
+        {reviews.map((review, index) => (
+          <motion.article
+            className="review-card"
+            key={review.id}
+            initial={{
+              opacity: 0,
+              y: 35,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+              amount: 0.15,
+            }}
+            transition={{
+              duration: 0.55,
+              delay: index * 0.08,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            whileHover={{
+              y: -8,
+            }}
+          >
+            <div
+              className="review-stars"
+              aria-label={`${review.rating} out of 5 stars`}
+            >
+              {"★".repeat(review.rating)}
+            </div>
+
+            <p className="review-text">"{review.review}"</p>
+
+            <div className="review-author">
+              <div className="review-avatar">
+                {review.name.charAt(0).toUpperCase()}
+              </div>
+
+              <div>
+                <strong>{review.name}</strong>
+                <span>Customer feedback</span>
+              </div>
+            </div>
+          </motion.article>
+        ))}
+      </div>
+
+      {/* CUSTOMER REVIEW FORM */}
+      <Reveal delay={0.15}>
+        <div className="review-form-card">
+          <div className="section-heading">
+            <p className="eyebrow">SHARE YOUR EXPERIENCE</p>
+
+            <h3>Leave us a review.</h3>
+
+            <p>Tell us about your experience with All Cleaning Services.</p>
+          </div>
+
+          <form className="review-form" onSubmit={handleSubmit}>
+            <label>
+              Your name
+              <input
+                type="text"
+                required
+                placeholder="Your name"
+                value={form.name}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    name: e.target.value,
+                  })
+                }
+              />
+            </label>
+
+            <label>
+              Rating
+              <select
+                value={form.rating}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    rating: Number(e.target.value),
+                  })
+                }
+              >
+                <option value="5">★★★★★ — Excellent</option>
+                <option value="4">★★★★☆ — Very good</option>
+                <option value="3">★★★☆☆ — Good</option>
+                <option value="2">★★☆☆☆ — Fair</option>
+                <option value="1">★☆☆☆☆ — Poor</option>
+              </select>
+            </label>
+
+            <label className="full">
+              Your review
+              <textarea
+                required
+                rows="5"
+                placeholder="Tell us about your cleaning experience..."
+                value={form.review}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    review: e.target.value,
+                  })
+                }
+              />
+            </label>
+
+            <motion.button
+              className="button primary full"
+              type="submit"
+              whileHover={{
+                scale: 1.015,
+                y: -2,
+              }}
+              whileTap={{
+                scale: 0.98,
+              }}
+            >
+              Submit Review
+            </motion.button>
+
+            {message && (
+              <motion.p
+                className="booking-message full"
+                initial={{
+                  opacity: 0,
+                  y: 10,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                }}
+              >
+                {message}
+              </motion.p>
+            )}
+          </form>
+        </div>
+      </Reveal>
+
+      {/* WHATSAPP REVIEW OPTION */}
+      <Reveal delay={0.2}>
+        <div className="reviews-cta">
+          <p>Prefer to send your feedback directly?</p>
+
+          <a
+            href="https://wa.me/2349040237971"
+            target="_blank"
+            rel="noreferrer"
+            className="button secondary"
+          >
+            Send Review on WhatsApp
+          </a>
+        </div>
+      </Reveal>
+    </section>
+  );
+}
+/* -------------------------------------------------------
    MAIN APP
 ------------------------------------------------------- */
 
@@ -582,6 +993,7 @@ function App() {
           <a href="#home">Home</a>
           <a href="#services">Services</a>
           <a href="#about">About</a>
+          <a href="#reviews">Reviews</a>
           <a href="#booking">Booking</a>
           <a href="#contact">Contact</a>
           <a href="#account">{session ? "Dashboard" : "Customer Login"}</a>
@@ -605,7 +1017,6 @@ function App() {
         {/* -------------------------------------------------
             HERO
         ------------------------------------------------- */}
-
         <section id="home" className="hero">
           <motion.div
             className="hero-copy"
@@ -717,11 +1128,9 @@ function App() {
             />
           </motion.div>
         </section>
-
         {/* -------------------------------------------------
             SERVICES
         ------------------------------------------------- */}
-
         <section id="services" className="section">
           <Reveal className="section-heading">
             <p className="eyebrow">OUR SERVICES</p>
@@ -779,11 +1188,11 @@ function App() {
             ))}
           </div>
         </section>
-
+        <BeforeAfter />\
+        <Reviews />
         {/* -------------------------------------------------
             ABOUT
         ------------------------------------------------- */}
-
         <motion.section
           id="about"
           className="about"
@@ -877,11 +1286,9 @@ function App() {
             }}
           />
         </motion.section>
-
         {/* -------------------------------------------------
             BOOKING
         ------------------------------------------------- */}
-
         <section id="booking" className="booking section">
           <Reveal className="section-heading">
             <p className="eyebrow">NEW BOOKING</p>
@@ -976,11 +1383,9 @@ function App() {
             </form>
           </Reveal>
         </section>
-
         {/* -------------------------------------------------
             ACCOUNT
         ------------------------------------------------- */}
-
         <section id="account">
           {session ? (
             session.user?.role === "admin" ? (
@@ -1006,11 +1411,9 @@ function App() {
             />
           )}
         </section>
-
         {/* -------------------------------------------------
             CONTACT
         ------------------------------------------------- */}
-
         <motion.section
           id="contact"
           className="contact"
@@ -1084,7 +1487,16 @@ function App() {
           </div>
         </motion.section>
       </main>
-
+      <a
+        className="floating-whatsapp"
+        href="https://wa.me/2349040237971"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Chat with us on WhatsApp"
+      >
+        <span className="whatsapp-icon">☏</span>
+        <span className="whatsapp-text">WhatsApp Us</span>
+      </a>
       {/* -------------------------------------------------
           FOOTER
       ------------------------------------------------- */}
