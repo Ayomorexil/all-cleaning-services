@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: all-cleaning-services
+    runtime: node
+    buildCommand: npm run install:all && npm run build
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: all-cleaning-services-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+
+databases:
+  - name: all-cleaning-services-db
+    databaseName: all_cleaning_services
+    user: all_cleaning_services

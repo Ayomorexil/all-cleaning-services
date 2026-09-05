@@ -1,0 +1,22 @@
+# All Cleaning Services — Launch Checklist
+
+- [ ] Create hosting account/project
+- [ ] Create PostgreSQL database
+- [ ] Configure DATABASE_URL
+- [ ] Configure ADMIN_EMAIL
+- [ ] Configure ADMIN_PASSWORD
+- [ ] Deploy
+- [ ] Initialize database schema
+- [ ] Create admin account
+- [ ] Test customer registration
+- [ ] Test customer login
+- [ ] Test booking submission
+- [ ] Test admin booking list
+- [ ] Test booking status changes
+- [ ] Test customer dashboard status
+- [ ] Test phone/WhatsApp link: +234 901 184 23051
+- [ ] Test TikTok: @allcleaningservic76
+- [ ] Connect custom domain
+- [ ] Verify HTTPS
+- [ ] Set database backups
+- [ ] Final mobile/desktop test

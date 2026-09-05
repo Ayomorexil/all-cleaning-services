@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: all-cleaning-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: all_cleaning_services
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - all_cleaning_pgdata:/var/lib/postgresql/data
+      - ./server/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+
+volumes:
+  all_cleaning_pgdata:
