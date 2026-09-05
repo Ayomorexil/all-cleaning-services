@@ -261,7 +261,7 @@ function App() {
           <a href="#contact">Contact</a>
           <a href="#account">{session ? 'Dashboard' : 'Customer Login'}</a>
         </nav>
-        <a className="nav-cta" href="tel:+23490118423051">Call Us</a>
+        <a className="nav-cta" href="tel:+2349040237971">Call Us</a>
       </header>
 
       <main>
@@ -276,6 +276,7 @@ function App() {
             <div className="hero-actions">
               <a className="button primary" href="#booking">Book a Service</a>
               <a className="button secondary" href="https://wa.me/2349040237971" target="_blank" rel="noreferrer">WhatsApp Us</a>
+              <a className="button secondary" href="https://wa.me/2349118423051" target="_blank" rel="noreferrer">WhatsApp Us</a>
             </div>
             <div className="trust-row">
               <span>✓ Trained Staff</span>
@@ -357,11 +358,16 @@ function App() {
             <p className="eyebrow">CONTACT US TODAY</p>
             <h2>For a cleaner, healthier space.</h2>
             <p><strong>Address:</strong> 8 Olowora, Mafoluku, Oshodi, Lagos State, Nigeria.</p>
-            <p><strong>Call / WhatsApp:</strong> +234 901 184 23051</p>
+            <p><strong>Call / WhatsApp:</strong> +234 904 023 7971
+            <p><strong>Chat on WhatsApp:</strong> +234 911 842 3051
+            </p>
             <p><strong>TikTok:</strong> @allcleaningservic76</p>
           </div>
           <div className="contact-actions">
-            <a className="button primary" href="tel:+23490118423051">Call +234 901 184 23051</a>
+            <a className="button primary" href="tel:+2349040237971">Call +234 904 023 7971
+
+            </a>
+            <a className="button secondary" href="https://wa.me/2349118423051" target="_blank" rel="noreferrer">Chat on WhatsApp</a>
             <a className="button secondary" href="https://wa.me/2349040237971" target="_blank" rel="noreferrer">Chat on WhatsApp</a>
           </div>
         </section>
