@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
+import { motion } from "motion/react";
 import "./styles.css";
 
 const fallbackServices = [
@@ -402,7 +403,12 @@ function App() {
 
       <main>
         <section id="home" className="hero">
-          <div className="hero-copy">
+          <motion.div
+            className="hero-copy"
+            initial={{ opacity: 0, x: -35 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+          >
             <p className="eyebrow">COMPLETE CLEANING & FUMIGATION SOLUTIONS</p>
             <h1>
               Clean spaces.
@@ -414,12 +420,27 @@ function App() {
               and facilities. We clean, you relax.
             </p>
             <div className="hero-actions">
-              <a className="button primary" href="#booking">
+              <motion.a
+                className="button primary"
+                href="#booking"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.98 }}
+              >
                 Book a Service
-              </a>
-              <a
+              </motion.a>
+              <motion.a
                 className="button secondary"
                 href="https://wa.me/2349040237971"
+                target="_blank"
+                rel="noreferrer"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                WhatsApp Us
+              </motion.a>
+              <a
+                className="button secondary"
+                href="https://wa.me/2349118423051"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -432,34 +453,61 @@ function App() {
               <span>✓ Quality Assured</span>
               <span>✓ Eco-Friendly Products</span>
             </div>
-          </div>
-          <div className="hero-card">
+          </motion.div>
+          <motion.div
+            className="hero-card"
+            initial={{ opacity: 0, scale: 0.94, x: 35 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
+            whileHover={{ scale: 1.02 }}
+          >
             <img
               src="/assets/flyer.jpg"
               alt="All Cleaning Services promotional flyer"
             />
-          </div>
+          </motion.div>
         </section>
 
         <section id="services" className="section">
-          <div className="section-heading">
+          <motion.div
+            className="section-heading"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.5 }}
+          >
             <p className="eyebrow">OUR SERVICES</p>
             <h2>Professional cleaning for every space.</h2>
             <p>Choose the service that fits your home, business or facility.</p>
-          </div>
+          </motion.div>
           <div className="service-grid">
             {services.map((service) => (
-              <article className="service-card" key={service.name}>
+              <motion.article
+                className="service-card"
+                key={service.name}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.45 }}
+                whileHover={{ y: -6 }}
+              >
                 <div className="service-icon">{service.icon}</div>
                 <h3>{service.name}</h3>
                 <p>{service.description}</p>
                 <a href="#booking">Request service →</a>
-              </article>
+              </motion.article>
             ))}
           </div>
         </section>
 
-        <section id="about" className="about">
+        <motion.section
+          id="about"
+          className="about"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6 }}
+        >
           <div>
             <p className="eyebrow">WHY ALL CLEANING SERVICES</p>
             <h2>A cleaner, healthier space starts here.</h2>
@@ -476,17 +524,23 @@ function App() {
             </ul>
           </div>
           <img src="/assets/logo.jpg" alt="All Cleaning Services" />
-        </section>
+        </motion.section>
 
         <section id="booking" className="booking section">
-          <div className="section-heading">
+          <motion.div
+            className="section-heading"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.5 }}
+          >
             <p className="eyebrow">NEW BOOKING</p>
             <h2>Tell us what you need cleaned.</h2>
             <p>
               Send your details and we’ll use them to prepare your service
               request.
             </p>
-          </div>
+          </motion.div>
           <form className="booking-form" onSubmit={submitBooking}>
             <label>
               Full name
@@ -569,7 +623,14 @@ function App() {
           )}
         </section>
 
-        <section id="contact" className="contact">
+        <motion.section
+          id="contact"
+          className="contact"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6 }}
+        >
           <div>
             <p className="eyebrow">CONTACT US TODAY</p>
             <h2>For a cleaner, healthier space.</h2>
@@ -600,7 +661,7 @@ function App() {
               Chat on WhatsApp
             </a>
           </div>
-        </section>
+        </motion.section>
       </main>
 
       <footer>
