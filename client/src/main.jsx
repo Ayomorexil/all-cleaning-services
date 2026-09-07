@@ -907,7 +907,8 @@ function Reviews() {
 ------------------------------------------------------- */
 
 function App() {
-  const [services, setServices] = useState(fallbackServices);
+  const [menuOpen, setMenuOpen] = useState(false);
+  // const [services, setServices] = useState(fallbackServices);
 
   const [bookingMessage, setBookingMessage] = useState("");
 
@@ -984,7 +985,7 @@ function App() {
           NAVIGATION
       ------------------------------------------------- */}
 
-      <header className="nav">
+      {/* <header className="nav">
         <a className="brand" href="#home">
           <img src="/assets/logo.jpg" alt="All Cleaning Services logo" />
         </a>
@@ -1008,6 +1009,57 @@ function App() {
           whileTap={{
             scale: 0.97,
           }}
+        >
+          Call Us
+        </motion.a>
+      </header> */}
+
+      <header className="nav">
+        <a className="brand" href="#home" onClick={() => setMenuOpen(false)}>
+          <img src="/assets/logo.jpg" alt="All Cleaning Services logo" />
+        </a>
+
+        <button
+          className={`hamburger ${menuOpen ? "active" : ""}`}
+          type="button"
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav className={menuOpen ? "nav-menu open" : "nav-menu"}>
+          <a href="#home" onClick={() => setMenuOpen(false)}>
+            Home
+          </a>
+          <a href="#services" onClick={() => setMenuOpen(false)}>
+            Services
+          </a>
+          <a href="#about" onClick={() => setMenuOpen(false)}>
+            About
+          </a>
+          <a href="#booking" onClick={() => setMenuOpen(false)}>
+            Booking
+          </a>
+          <a href="#contact" onClick={() => setMenuOpen(false)}>
+            Contact
+          </a>
+          <a href="#reviews" onClick={() => setMenuOpen(false)}>
+            Reviews
+          </a>
+          <a href="#account" onClick={() => setMenuOpen(false)}>
+            {session ? "Dashboard" : "Customer Login"}
+          </a>
+        </nav>
+
+        <motion.a
+          className="nav-cta"
+          href="tel:+2349040237971"
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.97 }}
         >
           Call Us
         </motion.a>
