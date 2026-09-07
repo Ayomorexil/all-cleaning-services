@@ -1557,7 +1557,7 @@ footer p {
 /* -------------------------------------------------------
    HAMBURGER NAVIGATION
 ------------------------------------------------------- */
-
+/* 
 .hamburger {
   display: none;
   border: 0;
@@ -1625,5 +1625,160 @@ footer p {
 
   .nav-cta {
     display: none;
+  }
+} */
+/* =====================================================
+   MOBILE HAMBURGER MENU
+   ===================================================== */
+
+.hamburger {
+  display: none;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+
+  position: relative;
+  z-index: 2002;
+}
+
+.hamburger span {
+  display: block;
+  width: 26px;
+  height: 3px;
+  border-radius: 999px;
+  background: #09204f;
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+
+/* Turn hamburger into X */
+
+.hamburger.active span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+/* =====================================================
+   MOBILE NAVIGATION
+   ===================================================== */
+
+@media (max-width: 768px) {
+  .nav {
+    position: relative;
+    z-index: 2000;
+    min-height: 80px;
+    padding: 14px 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    position: relative;
+    z-index: 2002;
+  }
+
+  .brand img {
+    width: 65px;
+    height: auto;
+    display: block;
+  }
+
+  /* Show hamburger */
+
+  .hamburger {
+    display: flex;
+    margin-left: auto;
+  }
+
+  /* Hide Call Us on mobile */
+
+  .nav-cta {
+    display: none;
+  }
+
+  /* Menu */
+
+  .nav-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+
+    display: none;
+
+    flex-direction: column;
+
+    background: #ffffff;
+
+    padding: 0 24px;
+
+    border-top: 1px solid #e5e9f0;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+
+    z-index: 2001;
+  }
+
+  /* IMPORTANT:
+     This is what makes the links appear */
+
+  .nav-menu.open {
+    display: flex;
+    padding: 12px 24px 20px;
+  }
+
+  .nav-menu a {
+    display: block;
+    width: 100%;
+
+    padding: 15px 4px;
+
+    color: #09204f;
+    background: #ffffff;
+
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+
+    border-bottom: 1px solid rgba(9, 32, 79, 0.1);
+  }
+
+  .nav-menu a:last-child {
+    border-bottom: none;
+  }
+
+  .nav-menu a:hover {
+    color: #1851a4;
+  }
+}
+
+/* =====================================================
+   DESKTOP
+   ===================================================== */
+
+@media (min-width: 769px) {
+  .hamburger {
+    display: none !important;
+  }
+
+  .nav-menu {
+    display: flex;
   }
 }
