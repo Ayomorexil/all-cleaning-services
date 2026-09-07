@@ -517,7 +517,6 @@ const beforeAfterItems = [
     before: "/assets/before-home.jpg",
     after: "/assets/after-home.jpg",
   },
-
   {
     id: 4,
     title: "Post-Construction Cleaning",
@@ -530,20 +529,13 @@ const beforeAfterItems = [
 function BeforeAfter() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [position, setPosition] = useState(50);
-
   const item = beforeAfterItems[activeIndex];
-
-  function handlePosition(e) {
-    setPosition(Number(e.target.value));
-  }
 
   return (
     <section id="before-after" className="before-after section">
       <Reveal className="section-heading">
         <p className="eyebrow">OUR RESULTS</p>
-
         <h2>See the difference we make.</h2>
-
         <p>
           Compare the space before and after our professional cleaning service.
         </p>
@@ -553,19 +545,15 @@ function BeforeAfter() {
         <div className="before-after-wrapper">
           <div className="before-after-card">
             <div className="before-after-image">
-              {/* AFTER IMAGE */}
               <img
                 src={item.after}
                 alt={`${item.title} after cleaning`}
                 className="after-image"
               />
 
-              {/* BEFORE IMAGE */}
               <div
                 className="before-image-container"
-                style={{
-                  width: `${position}%`,
-                }}
+                style={{ width: `${position}%` }}
               >
                 <img
                   src={item.before}
@@ -574,28 +562,20 @@ function BeforeAfter() {
                 />
               </div>
 
-              {/* LABELS */}
               <span className="before-label">BEFORE</span>
               <span className="after-label">AFTER</span>
 
-              {/* SLIDER LINE */}
-              <div
-                className="slider-line"
-                style={{
-                  left: `${position}%`,
-                }}
-              >
+              <div className="slider-line" style={{ left: `${position}%` }}>
                 <div className="slider-handle">↔</div>
               </div>
 
-              {/* RANGE CONTROL */}
               <input
                 className="before-after-range"
                 type="range"
                 min="0"
                 max="100"
                 value={position}
-                onChange={handlePosition}
+                onChange={(e) => setPosition(Number(e.target.value))}
                 aria-label="Compare before and after"
               />
             </div>
@@ -605,22 +585,18 @@ function BeforeAfter() {
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
               </div>
-
               <div className="before-after-counter">
                 {activeIndex + 1} / {beforeAfterItems.length}
               </div>
             </div>
           </div>
 
-          {/* PROJECT SELECTOR */}
           <div className="before-after-projects">
             {beforeAfterItems.map((project, index) => (
               <button
                 key={project.id}
                 type="button"
-                className={`before-after-project ${
-                  activeIndex === index ? "active" : ""
-                }`}
+                className={`before-after-project ${activeIndex === index ? "active" : ""}`}
                 onClick={() => {
                   setActiveIndex(index);
                   setPosition(50);
@@ -636,8 +612,9 @@ function BeforeAfter() {
     </section>
   );
 }
+
 /* -------------------------------------------------------
-   REVIEWS
+   CUSTOMER REVIEWS
 ------------------------------------------------------- */
 
 const defaultReviews = [
@@ -650,7 +627,7 @@ const defaultReviews = [
   },
   {
     id: 2,
-    name: "Godwin Luis ",
+    name: "Godwin Luis",
     rating: 5,
     review:
       "Very reliable and punctual. The quality of the cleaning was excellent and the team was easy to work with.",
@@ -660,255 +637,136 @@ const defaultReviews = [
     name: "Delcelsi Nursery and School",
     rating: 5,
     review:
-      "I was impressed with the results. My School environment looked fresh, clean and completely different after the service.",
+      "I was impressed with the results. My school environment looked fresh, clean and completely different after the service.",
   },
 ];
 
 function Reviews() {
   const [reviews, setReviews] = useState(() => {
     try {
-      const savedReviews = localStorage.getItem("acs_reviews");
-
-      return savedReviews ? JSON.parse(savedReviews) : defaultReviews;
+      const saved = localStorage.getItem("acs_reviews");
+      return saved ? JSON.parse(saved) : defaultReviews;
     } catch {
       return defaultReviews;
     }
   });
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const [form, setForm] = useState({
-    name: "",
-    rating: 5,
-    review: "",
-  });
-
-  const [message, setMessage] = useState("");
-
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    const name = form.name.trim();
-    const reviewText = form.review.trim();
-
-    if (!name || !reviewText) {
-      setMessage("Please enter your name and review.");
+  useEffect(() => {
+    if (!Array.isArray(reviews) || reviews.length === 0) {
+      setReviews(defaultReviews);
       return;
     }
+    localStorage.setItem("acs_reviews", JSON.stringify(reviews));
+  }, [reviews]);
 
-    if (reviewText.length < 10) {
-      setMessage("Please write a little more about your experience.");
-      return;
-    }
+  useEffect(() => {
+    if (activeIndex >= reviews.length) setActiveIndex(0);
+  }, [activeIndex, reviews.length]);
 
-    const newReview = {
-      id: Date.now(),
-      name,
-      rating: Number(form.rating),
-      review: reviewText,
-    };
+  if (!reviews.length) return null;
 
-    const updatedReviews = [newReview, ...reviews];
-
-    setReviews(updatedReviews);
-
-    try {
-      localStorage.setItem("acs_reviews", JSON.stringify(updatedReviews));
-    } catch {
-      // Continue even if localStorage is unavailable.
-    }
-
-    setForm({
-      name: "",
-      rating: 5,
-      review: "",
-    });
-
-    setMessage("Thank you for sharing your review!");
-  }
+  const review = reviews[activeIndex];
 
   return (
     <section id="reviews" className="reviews section">
       <Reveal className="section-heading">
         <p className="eyebrow">CUSTOMER REVIEWS</p>
-
         <h2>What our customers say.</h2>
-
-        <p>
-          We are committed to providing reliable service and quality cleaning
-          results for every customer.
-        </p>
+        <p>Real feedback from customers who have used our cleaning services.</p>
       </Reveal>
 
-      {/* REVIEW CARDS */}
-      <div className="reviews-grid">
-        {reviews.map((review, index) => (
+      <Reveal delay={0.15}>
+        <div className="review-carousel">
+          <button
+            type="button"
+            className="review-arrow"
+            onClick={() =>
+              setActiveIndex(
+                (activeIndex - 1 + reviews.length) % reviews.length,
+              )
+            }
+            aria-label="Previous review"
+          >
+            ←
+          </button>
+
           <motion.article
-            className="review-card"
             key={review.id}
-            initial={{
-              opacity: 0,
-              y: 35,
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0,
-            }}
-            viewport={{
-              once: true,
-              amount: 0.15,
-            }}
-            transition={{
-              duration: 0.55,
-              delay: index * 0.08,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            whileHover={{
-              y: -8,
-            }}
+            className="review-card"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.35 }}
           >
             <div
               className="review-stars"
               aria-label={`${review.rating} out of 5 stars`}
             >
-              {"★".repeat(review.rating)}
+              {"★".repeat(Math.max(0, Math.min(5, Number(review.rating) || 0)))}
             </div>
 
-            <p className="review-text">"{review.review}"</p>
+            <p className="review-text">“{review.review}”</p>
 
             <div className="review-author">
               <div className="review-avatar">
-                {review.name.charAt(0).toUpperCase()}
+                {String(review.name || "C")
+                  .charAt(0)
+                  .toUpperCase()}
               </div>
-
               <div>
                 <strong>{review.name}</strong>
-                <span>Customer feedback</span>
+                <span>Verified customer</span>
               </div>
             </div>
           </motion.article>
-        ))}
-      </div>
 
-      {/* CUSTOMER REVIEW FORM */}
-      <Reveal delay={0.15}>
-        <div className="review-form-card">
-          <div className="section-heading">
-            <p className="eyebrow">SHARE YOUR EXPERIENCE</p>
+          <button
+            type="button"
+            className="review-arrow"
+            onClick={() => setActiveIndex((activeIndex + 1) % reviews.length)}
+            aria-label="Next review"
+          >
+            →
+          </button>
+        </div>
 
-            <h3>Leave us a review.</h3>
-
-            <p>Tell us about your experience with All Cleaning Services.</p>
-          </div>
-
-          <form className="review-form" onSubmit={handleSubmit}>
-            <label>
-              Your name
-              <input
-                type="text"
-                required
-                placeholder="Your name"
-                value={form.name}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    name: e.target.value,
-                  })
-                }
-              />
-            </label>
-
-            <label>
-              Rating
-              <select
-                value={form.rating}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    rating: Number(e.target.value),
-                  })
-                }
-              >
-                <option value="5">★★★★★ — Excellent</option>
-                <option value="4">★★★★☆ — Very good</option>
-                <option value="3">★★★☆☆ — Good</option>
-                <option value="2">★★☆☆☆ — Fair</option>
-                <option value="1">★☆☆☆☆ — Poor</option>
-              </select>
-            </label>
-
-            <label className="full">
-              Your review
-              <textarea
-                required
-                rows="5"
-                placeholder="Tell us about your cleaning experience..."
-                value={form.review}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    review: e.target.value,
-                  })
-                }
-              />
-            </label>
-
-            <motion.button
-              className="button primary full"
-              type="submit"
-              whileHover={{
-                scale: 1.015,
-                y: -2,
-              }}
-              whileTap={{
-                scale: 0.98,
-              }}
-            >
-              Submit Review
-            </motion.button>
-
-            {message && (
-              <motion.p
-                className="booking-message full"
-                initial={{
-                  opacity: 0,
-                  y: 10,
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-              >
-                {message}
-              </motion.p>
-            )}
-          </form>
+        <div className="review-dots" aria-label="Review selector">
+          {reviews.map((item, index) => (
+            <button
+              key={item.id}
+              type="button"
+              className={index === activeIndex ? "active" : ""}
+              onClick={() => setActiveIndex(index)}
+              aria-label={`Show review ${index + 1}`}
+            />
+          ))}
         </div>
       </Reveal>
 
-      {/* WHATSAPP REVIEW OPTION */}
       <Reveal delay={0.2}>
         <div className="reviews-cta">
-          <p>Prefer to send your feedback directly?</p>
-
+          <p>Have you used our cleaning services?</p>
           <a
             href="https://wa.me/2349040237971"
             target="_blank"
             rel="noreferrer"
-            className="button secondary"
+            className="button primary"
           >
-            Send Review on WhatsApp
+            Leave a Review
           </a>
         </div>
       </Reveal>
     </section>
   );
 }
+
 /* -------------------------------------------------------
    MAIN APP
 ------------------------------------------------------- */
 
 function App() {
+  const [services, setServices] = useState(fallbackServices);
   const [menuOpen, setMenuOpen] = useState(false);
-  // const [services, setServices] = useState(fallbackServices);
 
   const [bookingMessage, setBookingMessage] = useState("");
 
@@ -985,50 +843,23 @@ function App() {
           NAVIGATION
       ------------------------------------------------- */}
 
-      {/* <header className="nav">
-        <a className="brand" href="#home">
-          <img src="/assets/logo.jpg" alt="All Cleaning Services logo" />
-        </a>
-
-        <nav>
-          <a href="#home">Home</a>
-          <a href="#services">Services</a>
-          <a href="#about">About</a>
-          <a href="#reviews">Reviews</a>
-          <a href="#booking">Booking</a>
-          <a href="#contact">Contact</a>
-          <a href="#account">{session ? "Dashboard" : "Customer Login"}</a>
-        </nav>
-
-        <motion.a
-          className="nav-cta"
-          href="tel:+2349040237971"
-          whileHover={{
-            scale: 1.04,
-          }}
-          whileTap={{
-            scale: 0.97,
-          }}
-        >
-          Call Us
-        </motion.a>
-      </header> */}
-
       <header className="nav">
         <a className="brand" href="#home" onClick={() => setMenuOpen(false)}>
           <img src="/assets/logo.jpg" alt="All Cleaning Services logo" />
         </a>
 
         <button
-          className={`hamburger ${menuOpen ? "active" : ""}`}
           type="button"
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          className={`hamburger ${menuOpen ? "active" : ""}`}
+          aria-label={
+            menuOpen ? "Close navigation menu" : "Open navigation menu"
+          }
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen((open) => !open)}
         >
-          <span></span>
-          <span></span>
-          <span></span>
+          <span />
+          <span />
+          <span />
         </button>
 
         <nav className={menuOpen ? "nav-menu open" : "nav-menu"}>
@@ -1038,6 +869,12 @@ function App() {
           <a href="#services" onClick={() => setMenuOpen(false)}>
             Services
           </a>
+          <a href="#before-after" onClick={() => setMenuOpen(false)}>
+            Our Results
+          </a>
+          <a href="#reviews" onClick={() => setMenuOpen(false)}>
+            Reviews
+          </a>
           <a href="#about" onClick={() => setMenuOpen(false)}>
             About
           </a>
@@ -1046,9 +883,6 @@ function App() {
           </a>
           <a href="#contact" onClick={() => setMenuOpen(false)}>
             Contact
-          </a>
-          <a href="#reviews" onClick={() => setMenuOpen(false)}>
-            Reviews
           </a>
           <a href="#account" onClick={() => setMenuOpen(false)}>
             {session ? "Dashboard" : "Customer Login"}
@@ -1069,6 +903,7 @@ function App() {
         {/* -------------------------------------------------
             HERO
         ------------------------------------------------- */}
+
         <section id="home" className="hero">
           <motion.div
             className="hero-copy"
@@ -1180,9 +1015,11 @@ function App() {
             />
           </motion.div>
         </section>
+
         {/* -------------------------------------------------
             SERVICES
         ------------------------------------------------- */}
+
         <section id="services" className="section">
           <Reveal className="section-heading">
             <p className="eyebrow">OUR SERVICES</p>
@@ -1240,11 +1077,14 @@ function App() {
             ))}
           </div>
         </section>
-        <BeforeAfter />\
+
+        <BeforeAfter />
         <Reviews />
+
         {/* -------------------------------------------------
             ABOUT
         ------------------------------------------------- */}
+
         <motion.section
           id="about"
           className="about"
@@ -1338,9 +1178,11 @@ function App() {
             }}
           />
         </motion.section>
+
         {/* -------------------------------------------------
             BOOKING
         ------------------------------------------------- */}
+
         <section id="booking" className="booking section">
           <Reveal className="section-heading">
             <p className="eyebrow">NEW BOOKING</p>
@@ -1435,9 +1277,11 @@ function App() {
             </form>
           </Reveal>
         </section>
+
         {/* -------------------------------------------------
             ACCOUNT
         ------------------------------------------------- */}
+
         <section id="account">
           {session ? (
             session.user?.role === "admin" ? (
@@ -1463,9 +1307,11 @@ function App() {
             />
           )}
         </section>
+
         {/* -------------------------------------------------
             CONTACT
         ------------------------------------------------- */}
+
         <motion.section
           id="contact"
           className="contact"
